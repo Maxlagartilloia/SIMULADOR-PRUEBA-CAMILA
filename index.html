@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Inteligente</title>
+
+<style>
+body {
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#0f172a,#1e3a8a);
+  color:white;
+}
+
+.container {
+  max-width:900px;
+  margin:40px auto;
+  background:#ffffff;
+  color:#0f172a;
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.3);
+}
+
+h1 {
+  text-align:center;
+  margin-bottom:10px;
+}
+
+button {
+  padding:12px 18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.start {
+  background:#2563eb;
+  color:white;
+  width:100%;
+}
+
+.option {
+  border:2px solid #e2e8f0;
+  padding:12px;
+  border-radius:10px;
+  margin:8px 0;
+  cursor:pointer;
+}
+
+.option:hover {
+  border-color:#2563eb;
+}
+
+.selected {
+  border-color:#2563eb;
+  background:#eff6ff;
+}
+
+.correct {
+  background:#dcfce7;
+  border-color:#22c55e;
+}
+
+.wrong {
+  background:#fee2e2;
+  border-color:#ef4444;
+}
+
+.progress {
+  height:10px;
+  background:#e2e8f0;
+  border-radius:20px;
+  overflow:hidden;
+  margin:15px 0;
+}
+
+.progress-bar {
+  height:100%;
+  width:0%;
+  background:#2563eb;
+}
+
+.hidden {
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Simulador Inteligente</h1>
+
+<div id="inicio">
+  <p>Practica todos los temas del examen de forma aleatoria.</p>
+  <button class="start" onclick="iniciar()">INICIAR</button>
+</div>
+
+<div id="quiz" class="hidden">
+
+<div id="contador"></div>
+
+<div class="progress">
+<div class="progress-bar" id="barra"></div>
+</div>
+
+<h2 id="pregunta"></h2>
+
+<div id="opciones"></div>
+
+<button onclick="siguiente()">Siguiente</button>
+
+</div>
+
+<div id="resultado" class="hidden">
+<h2>Resultado</h2>
+<p id="score"></p>
+<p id="nivel"></p>
+<button onclick="reiniciar()">Volver a intentar</button>
+</div>
+
+</div>
+
+<script>
+
+// BANCO DE PREGUNTAS
+const banco = {
+
+patrones:[
+{q:"2,4,6,8,...",o:["9","10","12","11"],c:1},
+{q:"3,6,12,24,...",o:["36","48","30","60"],c:1}
+],
+
+algoritmos:[
+{q:"3 + 4 × 2 = 14 ¿error?",o:["suma","multiplicación","orden","ninguno"],c:2}
+],
+
+inecuaciones:[
+{q:"x > 5 ¿cuál vale?",o:["3","5","6","4"],c:2}
+],
+
+proporciones:[
+{q:"2 cuadernos = $4, 4 cuadernos?",o:["6","8","10","12"],c:1}
+],
+
+relaciones:[
+{q:"Más trabajadores → menos tiempo",o:["Directa","Inversa"],c:1}
+],
+
+geometria:[
+{q:"Ángulos triángulo",o:["90","180","360","270"],c:1}
+],
+
+datos:[
+{q:"Media 2,4,6",o:["3","4","5","6"],c:1}
+],
+
+probabilidad:[
+{q:"Moneda cara",o:["1/3","1/2","1/4","2/3"],c:1}
+],
+
+verbal:[
+{q:"Conector causa",o:["aunque","porque","pero","además"],c:1},
+{q:"Idea principal: estudiar ayuda...",o:["idea","detalle","error","dato"],c:0}
+]
+
+};
+
+// GENERAR EXAMEN ALEATORIO
+function generar() {
+let exam = [];
+
+for (let tema in banco) {
+let lista = banco[tema];
+let mezcla = lista.sort(()=>Math.random()-0.5);
+exam.push(mezcla[0]);
+}
+
+return exam.sort(()=>Math.random()-0.5);
+}
+
+let preguntas = [];
+let actual = 0;
+let puntaje = 0;
+let seleccion = null;
+
+function iniciar(){
+preguntas = generar();
+document.getElementById("inicio").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+mostrar();
+}
+
+function mostrar(){
+let p = preguntas[actual];
+document.getElementById("pregunta").innerText = p.q;
+document.getElementById("contador").innerText = `Pregunta ${actual+1} de ${preguntas.length}`;
+
+let opcionesHTML="";
+p.o.forEach((op,i)=>{
+opcionesHTML += `<div class="option" onclick="seleccionar(${i},this)">${op}</div>`;
+});
+
+document.getElementById("opciones").innerHTML = opcionesHTML;
+
+let progreso = ((actual+1)/preguntas.length)*100;
+document.getElementById("barra").style.width = progreso+"%";
+
+seleccion=null;
+}
+
+function seleccionar(i,el){
+seleccion=i;
+document.querySelectorAll(".option").forEach(e=>e.classList.remove("selected"));
+el.classList.add("selected");
+}
+
+function siguiente(){
+
+if(seleccion===null){
+alert("Selecciona una respuesta");
+return;
+}
+
+if(seleccion === preguntas[actual].c){
+puntaje++;
+}
+
+actual++;
+
+if(actual>=preguntas.length){
+final();
+return;
+}
+
+mostrar();
+}
+
+function final(){
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("resultado").classList.remove("hidden");
+
+let total = preguntas.length;
+let porcentaje = Math.round((puntaje/total)*100);
+
+document.getElementById("score").innerText = `${puntaje} / ${total} (${porcentaje}%)`;
+
+let nivel="Sigue practicando";
+
+if(porcentaje>=90) nivel="EXCELENTE";
+else if(porcentaje>=70) nivel="MUY BIEN";
+else if(porcentaje>=50) nivel="BIEN";
+
+document.getElementById("nivel").innerText = nivel;
+}
+
+function reiniciar(){
+location.reload();
+}
+
+</script>
+
+</body>
+</html>
