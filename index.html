@@ -172,21 +172,27 @@ verbal:[
 
 // GENERAR EXAMEN ALEATORIO
 function generar() {
-let exam = [];
+  let examen = [];
+  let todas = [];
 
-for (let tema in banco) {
-let lista = banco[tema];
-let mezcla = lista.sort(()=>Math.random()-0.5);
-exam.push(mezcla[0]);
+  // Juntar todas las preguntas de todos los temas
+  for (let tema in banco) {
+    todas = todas.concat(banco[tema]);
+  }
+
+  // Mezclar todas
+  todas = todas.sort(() => Math.random() - 0.5);
+
+  // Si hay menos de 50, repetir preguntas mezcladas
+  while (todas.length < 50) {
+    todas = todas.concat(todas.sort(() => Math.random() - 0.5));
+  }
+
+  // Tomar solo 50
+  examen = todas.slice(0, 50);
+
+  return examen;
 }
-
-return exam.sort(()=>Math.random()-0.5);
-}
-
-let preguntas = [];
-let actual = 0;
-let puntaje = 0;
-let seleccion = null;
 
 function iniciar(){
 preguntas = generar();
