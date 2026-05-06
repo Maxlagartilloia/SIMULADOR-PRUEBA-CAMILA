@@ -19,7 +19,7 @@
         background: rgba(255, 255, 255, 1);
         color: #0f172a;
         border-radius: 1.5rem;
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
     }
 
     .option-btn {
@@ -27,13 +27,13 @@
         border: 2px solid #f1f5f9;
         text-align: left;
         width: 100%;
-        padding: 1.25rem;
+        padding: 1rem 1.25rem;
         border-radius: 1rem;
         font-weight: 500;
         display: flex;
         align-items: center;
         gap: 1rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
 
     .option-btn:hover:not(:disabled) {
@@ -42,104 +42,103 @@
         transform: translateX(5px);
     }
 
-    .correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; }
+    .correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; font-weight: bold; }
     .wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; }
 
     @keyframes shake {
         0%, 100% { transform: translateX(0); }
-        20% { transform: translateX(-10px); }
-        40% { transform: translateX(10px); }
-        60% { transform: translateX(-10px); }
-        80% { transform: translateX(10px); }
+        20% { transform: translateX(-8px); }
+        40% { transform: translateX(8px); }
+        60% { transform: translateX(-8px); }
+        80% { transform: translateX(8px); }
     }
     .shake-anim { animation: shake 0.4s ease-in-out; }
-
-    .custom-scroll::-webkit-scrollbar { width: 6px; }
-    .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-8">
+<body class="min-h-screen flex flex-col items-center py-6 md:py-10">
 
 <div class="w-full max-w-4xl px-4">
-    <!-- Encabezado -->
-    <header class="bg-white p-6 rounded-3xl shadow-xl mb-8 border-b-4 border-blue-700 flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- Encabezado Institucional -->
+    <header class="bg-white p-5 rounded-3xl shadow-2xl mb-6 border-b-4 border-blue-700 flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center gap-4">
-            <div class="bg-blue-800 text-white w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl">DB</div>
+            <div class="bg-blue-800 text-white w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl shadow-lg">DB</div>
             <div>
-                <h1 class="text-slate-900 font-extrabold text-lg uppercase tracking-tighter">Colegio Técnico Don Bosco</h1>
-                <p class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic">Admisión 2026 - 2027</p>
-                <p class="text-slate-400 font-medium text-[11px]">Estudiante: <span class="text-slate-800 font-black">Caleb Lombeida</span> (2do Bachillerato)</p>
+                <h1 class="text-slate-900 font-extrabold text-base md:text-lg uppercase tracking-tighter">Colegio Técnico Don Bosco</h1>
+                <p class="text-blue-600 font-bold text-[9px] uppercase tracking-widest italic">Admisión Bachillerato 2026</p>
+                <p class="text-slate-400 font-medium text-[10px]">Aspirante: <span class="text-slate-800 font-black">Caleb Lombeida</span></p>
             </div>
         </div>
         <div id="quiz-header-info" class="hidden flex gap-4">
             <div class="text-right">
-                <p class="text-[9px] uppercase font-black text-slate-400">Eficiencia</p>
+                <p class="text-[9px] uppercase font-black text-slate-400 tracking-widest">Precisión</p>
                 <p id="current-accuracy" class="font-mono font-black text-blue-700 text-lg">0%</p>
             </div>
             <div class="w-[1px] bg-slate-200 h-8"></div>
             <div class="text-right">
-                <p class="text-[9px] uppercase font-black text-slate-400">Tiempo</p>
+                <p class="text-[9px] uppercase font-black text-slate-400 tracking-widest">Tiempo</p>
                 <p id="timer" class="font-mono font-black text-slate-700 text-lg">00:00</p>
             </div>
         </div>
     </header>
 
     <!-- Pantalla de Selección -->
-    <div id="selection-screen" class="card-pro p-8 md:p-12 text-center transition-all">
-        <div class="mb-6 inline-block bg-blue-50 p-4 rounded-full text-blue-600 text-5xl">🎓</div>
-        <h2 class="text-3xl font-black text-slate-900 mb-2">Preparación de Alto Nivel</h2>
-        <p class="text-slate-500 mb-10 max-w-lg mx-auto">Caleb, el Don Bosco no es para cualquiera. Aquí se forjan técnicos de excelencia. Selecciona el área a dominar hoy.</p>
+    <div id="selection-screen" class="card-pro p-8 md:p-12 text-center animate-in fade-in duration-500">
+        <div class="mb-6 inline-block bg-blue-50 p-4 rounded-full text-blue-600 text-5xl">⚡</div>
+        <h2 class="text-3xl font-black text-slate-900 mb-2">Entrenamiento Bachillerato</h2>
+        <p class="text-slate-500 mb-10 max-w-lg mx-auto font-medium text-sm text-balance">Caleb, para entrar a 2do de Bachillerato debes dominar cada subtema del temario técnico. Selecciona un bloque para comenzar.</p>
         
-        <div class="grid md:grid-cols-2 gap-6 mb-12">
-            <button onclick="startQuiz('math')" class="group p-8 border-2 border-slate-100 rounded-[2rem] hover:border-blue-600 hover:bg-blue-50 transition-all text-left relative overflow-hidden">
+        <div class="grid md:grid-cols-2 gap-6 mb-10">
+            <button onclick="startQuiz('math')" class="group p-8 border-2 border-slate-100 rounded-[2rem] hover:border-blue-600 hover:bg-blue-50 transition-all text-left relative overflow-hidden bg-white">
                 <div class="text-4xl mb-4">🧮</div>
                 <h3 class="text-xl font-black text-slate-800">Lógico Matemático</h3>
-                <p class="text-xs text-slate-400 mt-2">Funciones, patrones complejos, inecuaciones y análisis de datos estadísticos.</p>
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-8xl font-black group-hover:scale-110 transition-transform">Σ</div>
+                <p class="text-[11px] text-slate-400 mt-2">Correlaciones, validación de algoritmos, patrones de orden superior e interpretación crítica.</p>
+                <div class="absolute -right-4 -bottom-4 opacity-5 text-8xl font-black group-hover:scale-110 transition-transform">Σ</div>
             </button>
 
-            <button onclick="startQuiz('verbal')" class="group p-8 border-2 border-slate-100 rounded-[2rem] hover:border-orange-600 hover:bg-orange-50 transition-all text-left relative overflow-hidden">
+            <button onclick="startQuiz('verbal')" class="group p-8 border-2 border-slate-100 rounded-[2rem] hover:border-orange-600 hover:bg-orange-50 transition-all text-left relative overflow-hidden bg-white">
                 <div class="text-4xl mb-4">📖</div>
                 <h3 class="text-xl font-black text-slate-800">Lógico Verbal</h3>
-                <p class="text-xs text-slate-400 mt-2">Sintaxis avanzada, inferencias múltiples y análisis de argumentos complejos.</p>
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-8xl font-black group-hover:scale-110 transition-transform">¶</div>
+                <p class="text-[11px] text-slate-400 mt-2">Inferencias múltiples, causa-efecto compleja, funciones sintácticas y normativa gramatical.</p>
+                <div class="absolute -right-4 -bottom-4 opacity-5 text-8xl font-black group-hover:scale-110 transition-transform">¶</div>
             </button>
         </div>
 
-        <p class="text-[10px] text-slate-400 font-bold uppercase italic tracking-tighter">"La educación es cuestión del corazón" - San Juan Bosco</p>
+        <p class="text-[10px] text-slate-400 font-bold uppercase italic tracking-widest">"La educación es cuestión del corazón" - Don Bosco</p>
     </div>
 
     <!-- Pantalla de Quiz -->
     <div id="quiz-screen" class="hidden">
         <div class="card-pro overflow-hidden">
             <div class="h-2 bg-slate-100 w-full">
-                <div id="progress-bar" class="h-full bg-blue-600 transition-all duration-500" style="width: 0%"></div>
+                <div id="progress-bar" class="h-full bg-blue-600 transition-all duration-700" style="width: 0%"></div>
             </div>
             
-            <div class="p-8 md:p-12">
-                <div class="flex justify-between items-center mb-8">
-                    <span id="topic-label" class="bg-blue-900 text-white text-[10px] font-black px-4 py-1 rounded-lg uppercase italic tracking-widest">TEMA</span>
-                    <span id="question-index" class="text-slate-400 font-black text-sm">PREGUNTA 01 / 50</span>
+            <div class="p-6 md:p-10">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div class="flex flex-col gap-1">
+                        <span id="topic-label" class="bg-slate-100 text-slate-500 text-[9px] font-black px-3 py-1 rounded-md uppercase tracking-widest w-fit">ÁREA</span>
+                        <span id="subtheme-label" class="text-blue-700 font-black text-xs uppercase tracking-tight">SUBTEMA: CARGANDO...</span>
+                    </div>
+                    <span id="question-index" class="text-slate-400 font-black text-xs uppercase">RETO 01 / 50</span>
                 </div>
 
-                <div id="question-content" class="min-h-[350px]">
-                    <h2 id="question-text" class="text-xl md:text-2xl font-bold text-slate-800 mb-10 leading-snug"></h2>
+                <div id="question-content" class="min-h-[300px]">
+                    <h2 id="question-text" class="text-lg md:text-xl font-bold text-slate-800 mb-8 leading-snug"></h2>
                     <div id="options-container" class="grid grid-cols-1 gap-1"></div>
                 </div>
 
-                <!-- Feedback -->
-                <div id="feedback-panel" class="hidden mt-8 p-6 rounded-2xl border-2 flex items-start gap-4 animate-in fade-in">
+                <!-- Feedback Panel -->
+                <div id="feedback-panel" class="hidden mt-6 p-5 rounded-2xl border-2 flex items-start gap-4 animate-in fade-in">
                     <div id="feedback-icon" class="text-3xl"></div>
                     <div>
-                        <p id="feedback-title" class="font-black text-sm uppercase mb-1"></p>
-                        <p id="feedback-explanation" class="text-sm leading-relaxed text-slate-600 italic"></p>
+                        <p id="feedback-title" class="font-black text-xs uppercase mb-1 tracking-tight"></p>
+                        <p id="feedback-explanation" class="text-xs md:text-sm leading-relaxed italic"></p>
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center mt-10 pt-8 border-t border-slate-100">
-                    <button onclick="exitQuiz()" class="text-slate-300 hover:text-red-500 font-black text-[10px] uppercase transition-colors">Abortar Prueba</button>
-                    <button id="next-btn" onclick="nextQuestion()" class="hidden bg-slate-900 text-white px-10 py-4 rounded-xl font-black shadow-lg hover:bg-blue-700 transition-all transform active:scale-95">CONTINUAR →</button>
+                <div class="flex flex-col md:flex-row justify-between items-center mt-8 pt-6 border-t border-slate-100 gap-4">
+                    <button onclick="exitQuiz()" class="text-slate-300 hover:text-red-500 font-black text-[10px] uppercase tracking-widest transition-all order-2 md:order-1">Regresar al Menú</button>
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden w-full md:w-auto bg-slate-900 text-white px-12 py-4 rounded-xl font-black text-sm shadow-xl hover:bg-blue-700 transition-all order-1 md:order-2">SIGUIENTE PREGUNTA →</button>
                 </div>
             </div>
         </div>
@@ -147,108 +146,253 @@
 
     <!-- Pantalla de Resultados -->
     <div id="result-screen" class="hidden card-pro p-10 md:p-16 text-center">
-        <div id="result-score-circle" class="w-36 h-36 rounded-full border-[12px] flex items-center justify-center mx-auto mb-8 shadow-2xl">
-            <span id="final-percent" class="text-4xl font-black">0%</span>
+        <div id="result-score-circle" class="w-32 h-32 rounded-full border-[10px] flex flex-col items-center justify-center mx-auto mb-6 shadow-2xl">
+            <span id="final-percent" class="text-3xl font-black">0%</span>
         </div>
-        <h2 class="text-3xl font-black text-slate-900 mb-4 tracking-tighter uppercase">Resultados: Caleb Lombeida</h2>
-        <p id="result-message" class="text-slate-500 mb-10 font-medium px-4"></p>
+        <h2 class="text-2xl font-black text-slate-900 mb-2 uppercase tracking-tighter text-balance">Informe Final: Caleb Lombeida</h2>
+        <p id="result-message" class="text-slate-500 mb-8 text-sm px-4 italic"></p>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 text-center">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <p class="text-[9px] text-slate-400 font-black uppercase mb-1">Aciertos</p>
-                <p id="res-correct" class="text-2xl font-black text-green-600">0</p>
+                <p id="res-correct" class="text-xl font-black text-green-600">0</p>
             </div>
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <p class="text-[9px] text-slate-400 font-black uppercase mb-1">Errores</p>
-                <p id="res-wrong" class="text-2xl font-black text-red-600">0</p>
+                <p id="res-wrong" class="text-xl font-black text-red-600">0</p>
             </div>
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <p class="text-[9px] text-slate-400 font-black uppercase mb-1">Tiempo</p>
-                <p id="res-time" class="text-2xl font-black text-blue-700">00:00</p>
+                <p id="res-time" class="text-xl font-black text-blue-700">00:00</p>
             </div>
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                 <p class="text-[9px] text-slate-400 font-black uppercase mb-1">Nota /10</p>
-                <p id="res-nota" class="text-2xl font-black text-slate-800">0</p>
+                <p id="res-nota" class="text-xl font-black text-slate-800">0</p>
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-4">
-            <button onclick="location.reload()" class="flex-1 bg-slate-900 text-white py-5 rounded-2xl font-black text-lg hover:bg-black transition-all shadow-xl">REPETIR ENTRENAMIENTO</button>
-            <button onclick="window.print()" class="px-8 bg-slate-100 text-slate-600 py-5 rounded-2xl font-black hover:bg-slate-200 transition-all">IMPRIMIR REPORTE</button>
+        <div class="flex flex-col md:flex-row gap-3">
+            <button onclick="location.reload()" class="flex-1 bg-slate-900 text-white py-4 rounded-xl font-black text-sm hover:bg-black transition-all">NUEVO ENTRENAMIENTO</button>
+            <button onclick="window.print()" class="px-6 bg-slate-100 text-slate-600 py-4 rounded-xl font-black text-sm hover:bg-slate-200 transition-all">PDF REPORTE</button>
         </div>
     </div>
 </div>
 
 <script>
-// BANCO DE PREGUNTAS TÉCNICAS (BASADO EN EL TEMARIO DE CALEB)
+// BANCO DE PREGUNTAS CON SUBTEMAS ESPECÍFICOS (Basado en temario real)
 const mathPool = [
-    // 1. Análisis avanzado de relaciones
-    { t: "1. Relaciones de Variables", q: "En un motor industrial, la potencia (P) es directamente proporcional al cuadrado de la velocidad (v). Si la velocidad se triplica, ¿qué sucede con la potencia?", o: ["Se triplica", "Aumenta 6 veces", "Aumenta 9 veces", "Se reduce a la tercera parte"], c: 2, e: "Relación cuadrática: 3² = 9. La potencia aumenta en el cuadrado de la razón." },
-    { t: "5. Proporcionalidad Avanzada", q: "Si 12 técnicos ensamblan 60 dispositivos en 4 días trabajando 8h/día, ¿cuántos técnicos se necesitan para ensamblar 120 dispositivos en 2 días trabajando 10h/día?", o: ["24 técnicos", "32 técnicos", "38.4 técnicos (redondear a 39)", "48 técnicos"], c: 2, e: "Regla de tres compuesta. (12 * 4 * 8 / 60) = (X * 2 * 10 / 120) -> X = 38.4." },
-    { t: "3. Propiedades y Estructuras", q: "¿Cuál es el valor del MCD (Máximo Común Divisor) de los números 144, 216 y 360?", o: ["36", "72", "144", "18"], c: 1, e: "Los factores comunes máximos son 2³ * 3² = 72." },
-    { t: "4. Patrones de Orden Superior", q: "Halle el término número 15 de la secuencia: 7, 11, 15, 19, ...", o: ["63", "59", "67", "71"], c: 0, e: "Progresión aritmética: a15 = 7 + (14 * 4) = 7 + 56 = 63." },
-    { t: "2. Evaluación de Procedimientos", q: "Al simplificar (x³)² * x⁴ / x², un estudiante obtuvo x⁸. ¿Cuál es el error cometido?", o: ["Multiplicó exponentes en la potencia de potencia", "No restó el exponente del divisor", "Sumó mal 6 + 4", "El resultado es correcto"], c: 1, e: "(x³)² = x⁶. x⁶ * x⁴ = x¹⁰. x¹⁰ / x² = x⁸. No hay error, el procedimiento es correcto." },
-    { t: "5. Proporcionalidad", q: "Si la razón entre dos números es 3:5 y su suma es 120, ¿cuál es el número mayor?", o: ["45", "75", "60", "80"], c: 1, e: "3k + 5k = 120 -> 8k = 120 -> k = 15. El mayor es 15 * 5 = 75." },
-    { t: "6. Interpretación de Datos", q: "En un gráfico circular, el sector de 'Gastos de Producción' abarca 108°. ¿Qué porcentaje del total representa?", o: ["25%", "30%", "40%", "15%"], c: 1, e: "(108 / 360) * 100 = 30%." },
-    { t: "8. Aplicación Contextos Reales", q: "Un capital de $5000 se invierte a un interés simple del 6% anual durante 18 meses. ¿Cuánto es el interés ganado?", o: ["$450", "$540", "$300", "$900"], c: 0, e: "I = C*i*t = 5000 * 0.06 * 1.5 = 450." },
-    { t: "4. Patrones", q: "¿Qué número sigue en la serie: 1, 3, 7, 15, 31, ...?", o: ["62", "63", "64", "60"], c: 1, e: "La diferencia es 2, 4, 8, 16... la siguiente es +32. 31+32=63." },
-    { t: "3. Estructuras Complejas", q: "¿Cuál es el valor de x que satisface: log2(x + 2) = 3?", o: ["6", "8", "10", "4"], c: 0, e: "2³ = x + 2 -> 8 = x + 2 -> x = 6." },
-    { t: "1. Relaciones", q: "Si la presión P de un gas es inversamente proporcional al volumen V, y cuando P=2 atm, V=6L. ¿Cuál es la presión si V=3L?", o: ["1 atm", "4 atm", "8 atm", "12 atm"], c: 1, e: "P1*V1 = P2*V2 -> 2*6 = P2*3 -> P2 = 4 atm." },
-    { t: "9. Toma de decisiones", q: "Usted debe elegir entre dos máquinas. La A produce 100 unidades con 2% de error. La B produce 120 unidades con 5% de error. ¿Cuál entrega más unidades sin error?", o: ["La Máquina A (98 unidades)", "La Máquina B (114 unidades)", "Ambas igual", "Faltan datos"], c: 1, e: "A: 100 - 2 = 98. B: 120 - 6 = 114. La B entrega más unidades funcionales." }
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Análisis de correlación inversa y directa", 
+        q: "Si la presión de un gas es inversamente proporcional al volumen y cuando P=3 atm, V=8 L. ¿Cuál es la presión si el volumen se reduce a 2 L?", 
+        o: ["6 atm", "12 atm", "24 atm", "1.5 atm"], 
+        c: 1, 
+        e: "Relación inversa: P1*V1 = P2*V2 -> 3*8 = P2*2 -> 24 = 2*P2 -> P2 = 12 atm." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Proporcionalidad y razonamiento relacional", 
+        q: "Si 15 técnicos reparan 30 máquinas en 4 días, ¿cuántos días tardarán 10 técnicos en reparar 20 máquinas?", 
+        o: ["2 días", "3 días", "4 días", "6 días"], 
+        c: 2, 
+        e: "Regla de tres compuesta. (15*20*4) / (10*30) = 1200 / 300 = 4 días." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Análisis de propiedades y estructuras matemáticas", 
+        q: "¿Cuál es el valor resultante de sumar el mcm de (4, 6) con el MCD de (12, 18)?", 
+        o: ["18", "24", "30", "12"], 
+        c: 0, 
+        e: "mcm(4,6)=12. MCD(12,18)=6. Suma: 12 + 6 = 18." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Inducción de reglas y generalización", 
+        q: "En la secuencia 1, 4, 13, 40... ¿qué regla se aplica para obtener el siguiente término?", 
+        o: ["n * 3 + 1", "n * 2 + 3", "n² + 3", "n + (n*3)"], 
+        c: 0, 
+        e: "1*3+1=4, 4*3+1=13, 13*3+1=40. La regla es multiplicar por 3 y sumar 1." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Validación de procesos algorítmicos", 
+        q: "Al resolver (x² - y²) / (x - y), un estudiante obtuvo (x - y). ¿Cuál fue el error?", 
+        o: ["Simplificó mal el signo", "La diferencia de cuadrados resulta en (x+y)(x-y)", "El resultado es correcto", "Dividió mal los exponentes"], 
+        c: 1, 
+        e: "x² - y² = (x+y)(x-y). Al dividir para (x-y), queda (x+y). El error fue el signo." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Modelado de restricciones y optimización", 
+        q: "Un taller debe entregar 500 piezas. La Máquina A hace 10 p/h con 2% de falla. La B hace 15 p/h con 5% de falla. ¿Cuál entrega más piezas útiles en 10 horas?", 
+        o: ["Máquina A (98 piezas)", "Máquina B (142.5 piezas)", "Máquina A (100 piezas)", "Máquina B (150 piezas)"], 
+        c: 1, 
+        e: "A: 100 * 0.98 = 98 útiles. B: 150 * 0.95 = 142.5 útiles." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Interpretación crítica de información", 
+        q: "Si en un gráfico de barras la desviación estándar de los tiempos de producción es de 0.2 segundos, ¿qué podemos inferir sobre el proceso?", 
+        o: ["Es altamente variable", "Es un proceso estable y preciso", "Tiene muchas fallas", "Es un proceso lento"], 
+        c: 1, 
+        e: "Una desviación estándar baja indica que los datos están agrupados cerca de la media, denotando estabilidad." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Aplicación matemática en contextos reales", 
+        q: "Un capital de $2000 genera un interés simple de $240 en 2 años. ¿Cuál es la tasa de interés anual?", 
+        o: ["5%", "6%", "12%", "8%"], 
+        c: 1, 
+        e: "I = C * r * t -> 240 = 2000 * r * 2 -> 240 = 4000r -> r = 0.06 (6%)." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Inducción de reglas y generalización", 
+        q: "¿Qué número continúa la serie: 2, 6, 12, 20, 30, ...?", 
+        o: ["36", "40", "42", "45"], 
+        c: 2, 
+        e: "Diferencias: +4, +6, +8, +10. El siguiente es +12. 30 + 12 = 42." 
+    },
+    { 
+        t: "RAZONAMIENTO MATEMÁTICO", 
+        st: "Análisis de propiedades y estructuras", 
+        q: "¿Cuál de estos números es primo y además es divisor de 155?", 
+        o: ["3", "7", "5", "11"], 
+        c: 2, 
+        e: "155 termina en 5, por lo que es divisible por 5 (que es primo)." 
+    }
 ];
 
 const verbalPool = [
-    { t: "1. Comprensión Intermedia", q: "Del texto: 'La meritocracia no es solo talento, es la intersección entre el privilegio y la perseverancia'. Se infiere que:", o: ["El talento es lo único que importa", "El éxito depende de factores externos e internos", "Solo los privilegiados triunfan", "La perseverancia es irrelevante"], c: 1, e: "El texto sugiere que el éxito es multicausal (intersección)." },
-    { t: "3. Uso de la Lengua - Sintaxis", q: "En la oración 'Caleb entregó los planos a los ingenieros ayer', ¿cuál es la función de 'a los ingenieros'?", o: ["Objeto Directo", "Objeto Indirecto", "Complemento Agente", "C.C. de Compañía"], c: 1, e: "Es el destinatario de la acción (¿A quiénes?)." },
-    { t: "2. Razonamiento Verbal - Argumentos", q: "Identifique la falacia: 'Ese técnico no puede tener razón sobre el motor porque es muy joven e inexperto'.", o: ["Ad hominem (ataque a la persona)", "Ad baculum (amenaza)", "Ad populum (mayoría)", "Falsa causalidad"], c: 0, e: "Ataca a la persona en lugar de refutar su argumento técnico." },
-    { t: "3. Uso de la Lengua - Tiempos", q: "¿Cuál es el Pretérito Pluscuamperfecto de indicativo del verbo 'Analizar'?", o: ["Hube analizado", "Había analizado", "Habré analizado", "Analizaba"], c: 1, e: "Se forma con 'había' (pretérito imperfecto de haber) + participio." },
-    { t: "1. Relaciones entre Párrafos", q: "Si un párrafo comienza con 'Por el contrario...', su relación con el anterior es de:", o: ["Causa-efecto", "Oposición o contraste", "Adición de información", "Conclusión"], c: 1, e: "Es un conector de contraste." },
-    { t: "3. Léxico en Contexto", q: "Sinónimo de 'INHERENTE' en: 'La precisión es una cualidad inherente a la ingeniería'.", o: ["Opcional", "Intrínseca / propia", "Extraña", "Adquirida"], c: 1, e: "Inherente significa que es inseparable o propio de la naturaleza de algo." },
-    { t: "2. Causa-Efecto Compleja", q: "Causa: 'Aumento súbito de la temperatura en el reactor'. Efecto lógico y técnico:", o: ["Disminución de la presión", "Activación de sistemas de enfriamiento", "Aumento de la eficiencia", "Cierre del taller"], c: 1, e: "Es la respuesta de seguridad técnica estándar." },
-    { t: "3. Funciones Sintácticas", q: "En 'Fue construido por el mejor arquitecto', la parte subrayada (por el mejor arquitecto) es:", o: ["Sujeto", "Complemento Agente", "Objeto Directo", "C.C. de Lugar"], c: 1, e: "En voz pasiva, indica quién realiza la acción precedido por 'por'." },
-    { t: "1. Ideas Implícitas", q: "Texto: 'El taller estaba en silencio, las herramientas limpias y ordenadas, pero el proyecto seguía a medias'. Se desprende que:", o: ["Se acabó el trabajo", "Hay un estancamiento o falta de avance", "El técnico es muy rápido", "Las herramientas no sirven"], c: 1, e: "La contradicción entre orden/limpieza y falta de avance sugiere inactividad." },
-    { t: "3. Ortografía Normativa", q: "¿Cuál de estas palabras está correctamente escrita?", o: ["Exhorbitante", "Escacez", "Viciversa", "Idiosincrasia"], c: 3, e: "Idiosincrasia se escribe con 's'. Las otras tienen errores de 'h', 'z' y vocales." },
-    { t: "2. Selección de Conclusiones", q: "Premisa A: Todos los metales conducen electricidad. Premisa B: El cobre es un metal. Conclusión:", o: ["El cobre quizás sea conductor", "El cobre conduce electricidad", "Solo el cobre conduce", "Metales no son aislantes"], c: 1, e: "Es una deducción lógica válida (Silogismo)." },
-    { t: "3. Uso de la Lengua - Conectores", q: "Complete: 'El diseño es innovador; __________, los materiales son costosos'.", o: ["no obstante", "porque", "así que", "además"], c: 0, e: "Indica una contraposición entre la calidad y el costo." }
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Inferencias múltiples e ideas implícitas", 
+        q: "Texto: 'El técnico revisó el panel, frunció el ceño y buscó el manual de emergencia'. Se infiere que:", 
+        o: ["El panel está arreglado", "Hay una falla que el técnico no sabe resolver de inmediato", "El manual es aburrido", "El técnico es nuevo"], 
+        c: 1, 
+        e: "El gesto y la búsqueda del manual de emergencia indican un problema no rutinario." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Funciones sintácticas y tiempos verbales", 
+        q: "Identifique el Objeto Directo en: 'Caleb terminó el examen técnico ayer'.", 
+        o: ["Caleb", "terminó", "el examen técnico", "ayer"], 
+        c: 2, 
+        e: "¿Qué terminó Caleb? El examen técnico (OD)." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Identificación de argumentos y falacias", 
+        q: "Si alguien dice: 'Debes comprar esta marca porque es la que todos usan', está usando una falacia:", 
+        o: ["Ad hominem", "Ad populum", "Ad baculum", "Ad ignorantiam"], 
+        c: 1, 
+        e: "Apela a la mayoría (lo que el pueblo hace) en lugar de a la calidad técnica." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Funciones sintácticas y tiempos verbales", 
+        q: "¿En qué tiempo está: 'Habíamos analizado los planos antes del montaje'?", 
+        o: ["Pretérito Perfecto", "Pluscuamperfecto", "Futuro Compuesto", "Condicional"], 
+        c: 1, 
+        e: "Auxiliar 'había' + participio indica una acción pasada anterior a otra pasada." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Organización y estructura textual", 
+        q: "Un texto que inicia con 'En primer lugar...', luego 'Posteriormente...' y termina con 'En conclusión...', tiene una estructura:", 
+        o: ["Descriptiva", "Secuencial / Cronológica", "Dialéctica", "Espacial"], 
+        c: 1, 
+        e: "Los marcadores indican un orden lógico de pasos o sucesos en el tiempo." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Léxico en contexto", 
+        q: "Significado de 'VANGUARDISTA' en el ámbito técnico:", o: ["Anticuado", "Innovador / Adelantado", "Costoso", "Difícil"], c: 1, e: "Vanguardia implica estar al frente de los cambios y la tecnología." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Relaciones de causa-efecto compleja", 
+        q: "Efecto: 'El motor se detuvo por recalentamiento'. Causa probable:", 
+        o: ["Exceso de lubricación", "Falla en el sistema de refrigeración", "Baja velocidad", "Mucha gasolina"], 
+        c: 1, 
+        e: "El recalentamiento suele ser causado por la falla en el enfriamiento (radiador/líquido)." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Funciones sintácticas", 
+        q: "Complemento Agente en: 'Los planos fueron diseñados por el ingeniero'.", 
+        o: ["Los planos", "fueron diseñados", "por el ingeniero", "el ingeniero"], 
+        c: 2, 
+        e: "En voz pasiva, quien realiza la acción es el C. Agente." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Ortografía normativa", 
+        q: "¿Cuál palabra está correctamente escrita?", 
+        o: ["Conceción", "Concesión", "Consesión", "Conceción"], 
+        c: 1, 
+        e: "Concesión se escribe con 'c' inicial y 's' en la terminación." 
+    },
+    { 
+        t: "RAZONAMIENTO VERBAL", 
+        st: "Selección de conclusiones lógicas", 
+        q: "Si P entonces Q. No Q. Por lo tanto:", 
+        o: ["P", "No P", "Quizás P", "Q"], 
+        c: 1, 
+        e: "Es el Modus Tollens: si el efecto no ocurre, la causa tampoco existió." 
+    }
 ];
 
-// Lógica de la APP
+// Lógica de Audio y Navegación
 let currentQuestions = [];
 let currentIndex = 0;
 let score = 0;
 let timerInterval;
 let seconds = 0;
 let canAnswer = true;
-const TOTAL_QUESTIONS = 50; // El sistema rellenará hasta 50 para Caleb
+let audioCtx = null;
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
 
 function playSound(type) {
+    if (!audioCtx) return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain); gain.connect(audioCtx.destination);
+    
     if (type === 'win') {
-        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
     } else {
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(220, audioCtx.currentTime);
         osc.frequency.linearRampToValueAtTime(110, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
     }
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
 }
 
 function startQuiz(type) {
+    initAudio();
     document.getElementById('selection-screen').classList.add('hidden');
     document.getElementById('quiz-screen').classList.remove('hidden');
     document.getElementById('quiz-header-info').classList.remove('hidden');
     
     let base = type === 'math' ? mathPool : verbalPool;
-    // Rellenar hasta 50 mezclando
     let pool = [...base];
-    while(pool.length < TOTAL_QUESTIONS) pool = pool.concat(base);
-    currentQuestions = pool.sort(() => Math.random() - 0.5).slice(0, TOTAL_QUESTIONS);
+    while(pool.length < 50) pool = pool.concat(base);
+    currentQuestions = pool.sort(() => Math.random() - 0.5).slice(0, 50);
     
     currentIndex = 0; score = 0; seconds = 0;
     startTimer();
@@ -271,17 +415,17 @@ function showQuestion() {
     const container = document.getElementById('options-container');
     
     document.getElementById('topic-label').innerText = q.t;
-    document.getElementById('question-index').innerText = `RETO ${(currentIndex + 1).toString().padStart(2, '0')} / ${TOTAL_QUESTIONS}`;
+    document.getElementById('subtheme-label').innerText = `SUBTEMA: ${q.st}`;
+    document.getElementById('question-index').innerText = `RETO ${(currentIndex + 1).toString().padStart(2, '0')} / 50`;
     document.getElementById('question-text').innerText = q.q;
     document.getElementById('feedback-panel').classList.add('hidden');
     document.getElementById('next-btn').classList.add('hidden');
-    document.getElementById('progress-bar').style.width = `${(currentIndex / TOTAL_QUESTIONS) * 100}%`;
+    document.getElementById('progress-bar').style.width = `${(currentIndex / 50) * 100}%`;
     
     container.innerHTML = '';
     q.o.forEach((opt, i) => {
         const btn = document.createElement('button');
-        btn.className = "option-btn animate-in fade-in slide-in-from-left duration-300";
-        btn.style.animationDelay = `${i * 100}ms`;
+        btn.className = "option-btn animate-in fade-in slide-in-from-left";
         btn.innerHTML = `<span class="bg-blue-100 w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black text-blue-900 border border-blue-200">${String.fromCharCode(65+i)}</span> ${opt}`;
         btn.onclick = () => validate(i, btn);
         container.appendChild(btn);
@@ -299,14 +443,14 @@ function validate(idx, btn) {
         score++;
         btn.classList.add('correct');
         playSound('win');
-        setFeedback("Misión Cumplida", q.e, "🎯", "border-green-200 bg-green-50 text-green-800");
+        setFeedback("Caleb, ¡Análisis Correcto!", q.e, "🎯", "border-green-200 bg-green-50 text-green-800");
     } else {
         btn.classList.add('wrong');
         btns[q.c].classList.add('correct');
         document.getElementById('quiz-screen').classList.add('shake-anim');
         setTimeout(() => document.getElementById('quiz-screen').classList.remove('shake-anim'), 400);
         playSound('lose');
-        setFeedback("Análisis Fallido", q.e, "⚠️", "border-red-200 bg-red-50 text-red-800");
+        setFeedback("Error Detectado", q.e, "💡", "border-red-200 bg-red-50 text-red-800");
     }
 
     document.getElementById('current-accuracy').innerText = Math.round((score / (currentIndex + 1)) * 100) + "%";
@@ -315,7 +459,7 @@ function validate(idx, btn) {
 
 function setFeedback(title, expl, icon, classes) {
     const f = document.getElementById('feedback-panel');
-    f.className = `mt-8 p-6 rounded-2xl border-2 flex items-start gap-4 animate-in fade-in ${classes}`;
+    f.className = `mt-6 p-5 rounded-2xl border-2 flex items-start gap-4 animate-in fade-in ${classes}`;
     document.getElementById('feedback-icon').innerText = icon;
     document.getElementById('feedback-title').innerText = title;
     document.getElementById('feedback-explanation').innerText = expl;
@@ -324,7 +468,7 @@ function setFeedback(title, expl, icon, classes) {
 
 function nextQuestion() {
     currentIndex++;
-    if (currentIndex < TOTAL_QUESTIONS) {
+    if (currentIndex < 50) {
         showQuestion();
     } else {
         finish();
@@ -336,17 +480,17 @@ function finish() {
     document.getElementById('quiz-screen').classList.add('hidden');
     document.getElementById('result-screen').classList.remove('hidden');
     
-    const porc = Math.round((score / TOTAL_QUESTIONS) * 100);
+    const porc = Math.round((score / 50) * 100);
     document.getElementById('final-percent').innerText = porc + "%";
     document.getElementById('res-correct').innerText = score;
-    document.getElementById('res-wrong').innerText = TOTAL_QUESTIONS - score;
+    document.getElementById('res-wrong').innerText = 50 - score;
     document.getElementById('res-time').innerText = document.getElementById('timer').innerText;
-    document.getElementById('res-nota').innerText = (score / TOTAL_QUESTIONS * 10).toFixed(1);
+    document.getElementById('res-nota').innerText = (score / 5).toFixed(1);
 
     let msg = ""; let color = "";
-    if (porc >= 90) { msg = "Caleb, demuestras un nivel técnico superior. Estás listo para liderar en el Don Bosco."; color = "#16a34a"; }
-    else if (porc >= 75) { msg = "Buen desempeño, pero en el bachillerato técnico el error puede ser fatal. Ajusta los detalles."; color = "#2563eb"; }
-    else { msg = "Tu rendimiento es insuficiente para las exigencias de este colegio. Estudia con más disciplina."; color = "#dc2626"; }
+    if (porc >= 90) { msg = "Excelencia Salesiana. Caleb, estás listo para 2do de Bachillerato."; color = "#16a34a"; }
+    else if (porc >= 70) { msg = "Buen nivel. Repasa los subtemas donde fallaste para asegurar el cupo."; color = "#2563eb"; }
+    else { msg = "Nivel insuficiente. Refuerza la lógica técnica urgentemente."; color = "#dc2626"; }
 
     document.getElementById('result-message').innerText = msg;
     document.getElementById('result-score-circle').style.borderColor = color;
@@ -354,8 +498,11 @@ function finish() {
 }
 
 function exitQuiz() {
-    if (confirm("¿Caleb, vas a rendirte ahora? El examen real no permite abandonar. ¿Deseas salir?")) {
-        location.reload();
+    if (confirm("¿Caleb, vas a regresar al menú? Se perderá el progreso de este bloque.")) {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('quiz-header-info').classList.add('hidden');
+        document.getElementById('selection-screen').classList.remove('hidden');
+        clearInterval(timerInterval);
     }
 }
 </script>
@@ -363,11 +510,9 @@ function exitQuiz() {
 <style>
     @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slide-in-from-left { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-    @keyframes slide-in-from-bottom { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .animate-in { animation-fill-mode: both; }
     .fade-in { animation-name: fade-in; }
     .slide-in-from-left { animation-name: slide-in-from-left; }
-    .slide-in-from-bottom-4 { animation-name: slide-in-from-bottom; }
 </style>
 
 </body>
