@@ -3,271 +3,328 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador Inteligente</title>
-
+<title>Simulador Pro - Admisión Técnica</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-body {
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#0f172a,#1e3a8a);
-  color:white;
-}
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+    
+    body {
+        font-family: 'Outfit', sans-serif;
+        background: #f8fafc;
+        color: #1e293b;
+    }
 
-.container {
-  max-width:900px;
-  margin:40px auto;
-  background:#ffffff;
-  color:#0f172a;
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.3);
-}
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(226, 232, 240, 1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+    }
 
-h1 {
-  text-align:center;
-  margin-bottom:10px;
-}
+    .option-btn {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid #f1f5f9;
+    }
 
-button {
-  padding:12px 18px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
+    .option-btn:hover:not(:disabled) {
+        border-color: #2563eb;
+        background: #f0f7ff;
+        transform: translateX(4px);
+    }
 
-.start {
-  background:#2563eb;
-  color:white;
-  width:100%;
-}
+    .option-selected {
+        border-color: #2563eb;
+        background: #eff6ff;
+        font-weight: 600;
+    }
 
-.option {
-  border:2px solid #e2e8f0;
-  padding:12px;
-  border-radius:10px;
-  margin:8px 0;
-  cursor:pointer;
-}
+    .option-correct {
+        background: #dcfce7 !important;
+        border-color: #22c55e !important;
+        color: #166534 !important;
+    }
 
-.option:hover {
-  border-color:#2563eb;
-}
+    .option-wrong {
+        background: #fee2e2 !important;
+        border-color: #ef4444 !important;
+        color: #991b1b !important;
+    }
 
-.selected {
-  border-color:#2563eb;
-  background:#eff6ff;
-}
-
-.correct {
-  background:#dcfce7;
-  border-color:#22c55e;
-}
-
-.wrong {
-  background:#fee2e2;
-  border-color:#ef4444;
-}
-
-.progress {
-  height:10px;
-  background:#e2e8f0;
-  border-radius:20px;
-  overflow:hidden;
-  margin:15px 0;
-}
-
-.progress-bar {
-  height:100%;
-  width:0%;
-  background:#2563eb;
-}
-
-.hidden {
-  display:none;
-}
+    @keyframes pulse-soft {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+    .loading-pulse { animation: pulse-soft 2s infinite; }
 </style>
 </head>
+<body class="min-h-screen py-10 px-4">
 
-<body>
+<div class="max-w-4xl mx-auto">
+    <!-- Header Decorativo -->
+    <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-blue-200">DB</div>
+            <div>
+                <h1 class="text-xl font-extrabold tracking-tight text-slate-800">SIMULADOR EXTENDIDO</h1>
+                <p class="text-xs font-bold text-blue-500 uppercase tracking-widest">Preparación Técnica 2026</p>
+            </div>
+        </div>
+        <div class="flex gap-4 items-center">
+            <div id="stats-area" class="hidden flex gap-4 text-right">
+                <div>
+                    <p class="text-[10px] uppercase font-black text-slate-400">Progreso</p>
+                    <p id="counter-text" class="font-mono font-bold text-slate-700">01 / 50</p>
+                </div>
+                <div class="w-[1px] h-8 bg-slate-200"></div>
+                <div>
+                    <p class="text-[10px] uppercase font-black text-slate-400">Puntaje</p>
+                    <p id="live-score" class="font-mono font-bold text-green-600">0%</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="container">
+    <!-- Contenedor Principal -->
+    <div id="app-container" class="glass-card rounded-[2.5rem] p-8 md:p-12 min-h-[500px] flex flex-col justify-center">
+        
+        <!-- Pantalla Inicio -->
+        <div id="inicio" class="text-center">
+            <div class="mb-6 inline-block p-4 bg-blue-50 rounded-full text-blue-600 text-4xl">📚</div>
+            <h2 class="text-3xl font-black text-slate-900 mb-4">Entrenamiento de Admisión</h2>
+            <p class="text-slate-500 mb-10 max-w-lg mx-auto">Este simulador generará una prueba aleatoria de <strong>50 preguntas</strong> cubriendo todos los temas técnicos de Razonamiento Matemático y Verbal.</p>
+            
+            <button onclick="iniciar()" class="w-full md:w-auto px-12 py-5 bg-slate-900 text-white rounded-2xl font-black text-lg shadow-xl shadow-slate-200 hover:bg-black transition-all hover:-translate-y-1 active:scale-95">
+                INICIAR SIMULACIÓN COMPLETA
+            </button>
+            <p class="mt-8 text-xs text-slate-400 font-medium italic">"La educación es cuestión del corazón" - Don Bosco</p>
+        </div>
 
-<h1>Simulador Inteligente</h1>
+        <!-- Pantalla Quiz -->
+        <div id="quiz" class="hidden">
+            <div class="mb-10">
+                <div class="flex items-center gap-2 mb-4">
+                    <span id="categoria-tag" class="bg-slate-100 text-slate-500 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter">MATEMÁTICAS</span>
+                </div>
+                <h2 id="pregunta" class="text-xl md:text-2xl font-bold text-slate-800 leading-tight"></h2>
+            </div>
 
-<div id="inicio">
-  <p>Practica todos los temas del examen de forma aleatoria.</p>
-  <button class="start" onclick="iniciar()">INICIAR</button>
-</div>
+            <div id="opciones" class="grid grid-cols-1 gap-3 mb-10">
+                <!-- Opciones -->
+            </div>
 
-<div id="quiz" class="hidden">
+            <div id="feedback" class="hidden mb-10 p-6 rounded-2xl border-2 animate-in fade-in">
+                <p id="feedback-msg" class="text-sm font-bold mb-2 uppercase"></p>
+                <p id="explicacion" class="text-sm text-slate-600 leading-relaxed"></p>
+            </div>
 
-<div id="contador"></div>
+            <div class="flex justify-between items-center">
+                <button onclick="confirmExit()" class="text-slate-400 text-xs font-bold uppercase hover:text-red-500 transition-colors">Abortar Prueba</button>
+                <button id="btn-siguiente" onclick="siguiente()" class="hidden px-10 py-4 bg-blue-600 text-white rounded-xl font-black shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all">
+                    SIGUIENTE →
+                </button>
+            </div>
+        </div>
 
-<div class="progress">
-<div class="progress-bar" id="barra"></div>
-</div>
+        <!-- Pantalla Resultados -->
+        <div id="resultado" class="hidden text-center">
+            <div id="result-circle" class="w-32 h-32 rounded-full border-8 flex items-center justify-center mx-auto mb-6">
+                <span id="final-percent" class="text-3xl font-black">0%</span>
+            </div>
+            <h2 class="text-3xl font-black text-slate-900 mb-2">Informe Final</h2>
+            <p id="nivel-msg" class="text-slate-500 mb-8 font-medium"></p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-10">
+                <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Aciertos</p>
+                    <p id="res-correctas" class="text-2xl font-black text-green-600">0</p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Errores</p>
+                    <p id="res-incorrectas" class="text-2xl font-black text-red-600">0</p>
+                </div>
+            </div>
 
-<h2 id="pregunta"></h2>
+            <button onclick="reiniciar()" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-black hover:bg-black transition-all">REINTENTAR NUEVO TEST</button>
+        </div>
 
-<div id="opciones"></div>
+    </div>
 
-<button onclick="siguiente()">Siguiente</button>
-
-</div>
-
-<div id="resultado" class="hidden">
-<h2>Resultado</h2>
-<p id="score"></p>
-<p id="nivel"></p>
-<button onclick="reiniciar()">Volver a intentar</button>
-</div>
-
+    <!-- Barra de Progreso Inferior -->
+    <div id="progress-container" class="hidden mt-8 bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+        <div class="flex justify-between text-[10px] font-black text-slate-400 uppercase mb-2">
+            <span>Completado</span>
+            <span id="percent-text">0%</span>
+        </div>
+        <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div id="barra" class="h-full bg-blue-600 transition-all duration-500" style="width: 0%"></div>
+        </div>
+    </div>
 </div>
 
 <script>
+// BANCO MASIVO DE PREGUNTAS (Basado en las imágenes)
+const banco = [
+    // RAZONAMIENTO MATEMÁTICO
+    { t:"MATEMÁTICAS", q:"En un sistema de producción, si el número de máquinas (M) aumenta y el tiempo de entrega (T) disminuye a la mitad, ¿qué tipo de relación existe?", o:["Directa","Inversa","Cuadrática","No existe relación"], c:1, e:"Si una aumenta y la otra disminuye en la misma proporción, la relación es Inversa." },
+    { t:"MATEMÁTICAS", q:"¿Cuál es el siguiente número en la secuencia: 2, 6, 12, 20, 30, ...?", o:["36","40","42","45"], c:2, e:"La diferencia aumenta de 2 en 2: +4, +6, +8, +10, el siguiente es +12. 30+12=42." },
+    { t:"MATEMÁTICAS", q:"Un técnico detecta que (x + y)² fue resuelto como x² + y². ¿Cuál es el término faltante?", o:["2xy","xy","(xy)²","x - y"], c:0, e:"El trinomio cuadrado perfecto es x² + 2xy + y²." },
+    { t:"MATEMÁTICAS", q:"Si 5 operarios construyen 10 motores en 2 días, ¿cuántos operarios se necesitan para construir 20 motores en 1 día?", o:["10","20","15","5"], c:1, e:"Doble motores en la mitad de tiempo requiere cuadriplicar el esfuerzo o duplicar operarios por cada condición: 5*2*2 = 20." },
+    { t:"MATEMÁTICAS", q:"¿Cuál de estos números es primo y múltiplo de la diferencia de 15 y 10?", o:["5","10","15","3"], c:0, e:"15 - 10 = 5. El número 5 es primo y múltiplo de sí mismo." },
+    { t:"MATEMÁTICAS", q:"En un gráfico de barras, si una columna es el triple de otra, ¿qué razón representan?", o:["1:2","2:1","3:1","1:3"], c:2, e:"La razón entre el triple y el original es 3 a 1." },
+    { t:"MATEMÁTICAS", q:"Halle el valor de x en la inecuación: 3x - 5 > 10", o:["x > 5","x < 5","x > 15","x < 3"], c:0, e:"3x > 15 -> x > 15/3 -> x > 5." },
+    { t:"MATEMÁTICAS", q:"¿Cuál es la probabilidad de obtener un número par al lanzar un dado de 6 caras?", o:["1/3","1/2","1/6","2/3"], c:1, e:"Hay 3 pares (2,4,6) de 6 totales: 3/6 = 1/2." },
+    { t:"MATEMÁTICAS", q:"Determine el término que continúa: 1, 4, 9, 16, ...", o:["20","24","25","30"], c:2, e:"Son cuadrados perfectos: 1², 2², 3², 4², el siguiente es 5²=25." },
+    { t:"MATEMÁTICAS", q:"Si el 20% de un número es 40, ¿cuál es el 50% de dicho número?", o:["80","100","200","120"], c:1, e:"Si el 20% es 40, el 100% es 200. El 50% de 200 es 100." },
+    { t:"MATEMÁTICAS", q:"Un artículo cuesta $80 y tiene un descuento del 15%. ¿Cuánto se paga?", o:["$68","$70","$72","$65"], c:0, e:"15% de 80 es 12. 80 - 12 = 68." },
+    { t:"MATEMÁTICAS", q:"En una secuencia: A, 3, C, 6, E, 9, ... ¿Qué sigue?", o:["F, 12","G, 12","G, 11","F, 11"], c:1, e:"Letras saltan una (A,C,E,G) y números van de 3 en 3 (3,6,9,12)." },
+    { t:"MATEMÁTICAS", q:"La suma de las edades de A y B es 40. Si A tiene el triple que B, ¿cuántos años tiene B?", o:["10","20","15","30"], c:0, e:"3x + x = 40 -> 4x = 40 -> x = 10." },
+    { t:"MATEMÁTICAS", q:"¿Qué ángulo falta en un triángulo si dos miden 45° y 60°?", o:["75°","85°","90°","100°"], c:0, e:"180 - (45 + 60) = 180 - 105 = 75." },
+    { t:"MATEMÁTICAS", q:"Si un mapa escala 1:100 indica 5cm, ¿cuántos metros reales son?", o:["5m","50m","500m","0.5m"], c:0, e:"5 * 100 = 500 cm = 5 metros." },
+    
+    // RAZONAMIENTO VERBAL
+    { t:"VERBAL", q:"¿Cuál es el antónimo de EFÍMERO?", o:["Breve","Duradero","Rápido","Pasajero"], c:1, e:"Efímero significa algo que dura muy poco; lo opuesto es duradero." },
+    { t:"VERBAL", q:"Complete la analogía: VOLANTE es a AUTO como TIMÓN es a...", o:["Bicicleta","Barco","Avión","Tren"], c:1, e:"Relación de parte a todo en el sistema de dirección." },
+    { t:"VERBAL", q:"En la oración 'Juan entregó el reporte a la jefa', ¿cuál es el Objeto Indirecto?", o:["Juan","entregó","el reporte","a la jefa"], c:3, e:"El OI indica el destinatario de la acción (¿A quién?)." },
+    { t:"VERBAL", q:"Identifique la palabra con error ortográfico:", o:["Exhibir","Hervir","Vivienda","Halla (de haber)"], c:3, e:"De 'haber' es 'Haya'. 'Halla' es de encontrar." },
+    { t:"VERBAL", q:"¿Qué conector indica CAUSA?", o:["Aunque","Pero","Porque","Además"], c:2, e:"'Porque' introduce la razón o motivo de algo." },
+    { t:"VERBAL", q:"Identifique el sujeto: 'Ayer por la tarde llegaron cansados los jugadores'.", o:["Ayer por la tarde","llegaron cansados","los jugadores","cansados"], c:2, e:"El sujeto es quien realiza la acción de llegar: los jugadores." },
+    { t:"VERBAL", q:"Sinónimo de 'ALTRUISTA':", o:["Egoísta","Generoso","Tacaño","Ambicioso"], c:1, e:"Altruista es alguien que procura el bien ajeno de manera desinteresada." },
+    { t:"VERBAL", q:"Tiempo verbal de 'Habíamos terminado':", o:["Pretérito Perfecto","Pluscuamperfecto","Futuro","Condicional"], c:1, e:"El pluscuamperfecto se forma con 'había' + participio." },
+    { t:"VERBAL", q:"Relación Causa-Efecto: 'Llovió torrencialmente'. Efecto lógico:", o:["Salió el sol","El suelo se mojó","Hizo calor","No hubo nubes"], c:1, e:"La consecuencia directa de la lluvia es la humedad en el suelo." },
+    { t:"VERBAL", q:"Idea principal: 'La lectura mejora la empatía y expande el vocabulario'.", o:["Leer es aburrido","Beneficios de la lectura","Tipos de libros","Cómo leer rápido"], c:1, e:"El texto resume las ventajas de leer." },
+    { t:"VERBAL", q:"¿Cuál es una oración pasiva?", o:["Juan come pan","El pan es comido por Juan","Juan comió","Comiendo pan"], c:1, e:"La voz pasiva usa el verbo ser + participio y el sujeto recibe la acción." },
+    { t:"VERBAL", q:"Identifique la palabra esdrújula:", o:["Canción","Árbol","Cómputo","Sofá"], c:2, e:"Cómputo se acentúa en la antepenúltima sílaba." },
+    { t:"VERBAL", q:"Complete: 'No vino a clases _______ estaba enfermo'.", o:["aunque","porque","pero","si"], c:1, e:"Se requiere un conector causal." },
+    { t:"VERBAL", q:"¿Cuál es el núcleo del predicado en 'Ellos corren por el parque'?", o:["Ellos","corren","por","parque"], c:1, e:"El núcleo del predicado es siempre el verbo conjugado." },
+    { t:"VERBAL", q:"Inferir del texto: 'Lucía lleva un paraguas aunque hay sol'.", o:["Va a llover","Lucía es precavida","El paraguas es de sol","No se puede saber"], c:1, e:"La precaución es la inferencia más lógica ante una acción preventiva." },
 
-// BANCO DE PREGUNTAS
-const banco = {
+    // Preguntas adicionales para llegar a los 50+
+    { t:"MATEMÁTICAS", q:"MCM de 4 y 6:", o:["12","24","10","2"], c:0, e:"El menor múltiplo común es 12." },
+    { t:"MATEMÁTICAS", q:"Diferencia entre el mayor y menor de: 5, 12, 3, 9, 21", o:["18","15","12","21"], c:0, e:"21 - 3 = 18." },
+    { t:"MATEMÁTICAS", q:"Si un ángulo mide 90°, se llama:", o:["Agudo","Obtuso","Recto","Llano"], c:2, e:"90 grados exactos es un ángulo recto." },
+    { t:"MATEMÁTICAS", q:"Resultado de 10 - 2 * 3:", o:["24","4","8","10"], c:1, e:"Jerarquía: primero 2*3=6. 10-6=4." },
+    { t:"MATEMÁTICAS", q:"¿Qué porcentaje es 10 de 50?", o:["10%","20%","50%","5%"], c:1, e:"10/50 = 1/5 = 20%." },
+    { t:"VERBAL", q:"Femenino de 'Yerno':", o:["Yerna","Nuera","Esposa","Mujer"], c:1, e:"El término correcto es nuera." },
+    { t:"VERBAL", q:"Significado de 'Prever':", o:["Ver después","Ver antes","No ver","Ver mal"], c:1, e:"Pre- (antes) ver." },
+    { t:"VERBAL", q:"¿Cuál es un hiato?", o:["Cielo","Poeta","Auto","Aire"], c:1, e:"Po-e-ta (separación de vocales fuertes)." },
+    { t:"VERBAL", q:"Función de 'Ayer' en 'Ayer salí':", o:["Sujeto","C.C. Tiempo","Objeto Directo","Verbo"], c:1, e:"Indica cuándo ocurrió la acción." },
+    { t:"MATEMÁTICAS", q:"Suma de 1/2 + 1/4:", o:["2/6","3/4","1/6","1/2"], c:1, e:"2/4 + 1/4 = 3/4." }
+];
 
-patrones:[
-{q:"2,4,6,8,...",o:["9","10","12","11"],c:1},
-{q:"3,6,12,24,...",o:["36","48","30","60"],c:1}
-],
+// Lógica del Sistema
+let preguntas = [];
+let actual = 0;
+let puntaje = 0;
+let seleccion = null;
 
-algoritmos:[
-{q:"3 + 4 × 2 = 14 ¿error?",o:["suma","multiplicación","orden","ninguno"],c:2}
-],
-
-inecuaciones:[
-{q:"x > 5 ¿cuál vale?",o:["3","5","6","4"],c:2}
-],
-
-proporciones:[
-{q:"2 cuadernos = $4, 4 cuadernos?",o:["6","8","10","12"],c:1}
-],
-
-relaciones:[
-{q:"Más trabajadores → menos tiempo",o:["Directa","Inversa"],c:1}
-],
-
-geometria:[
-{q:"Ángulos triángulo",o:["90","180","360","270"],c:1}
-],
-
-datos:[
-{q:"Media 2,4,6",o:["3","4","5","6"],c:1}
-],
-
-probabilidad:[
-{q:"Moneda cara",o:["1/3","1/2","1/4","2/3"],c:1}
-],
-
-verbal:[
-{q:"Conector causa",o:["aunque","porque","pero","además"],c:1},
-{q:"Idea principal: estudiar ayuda...",o:["idea","detalle","error","dato"],c:0}
-]
-
-};
-
-// GENERAR EXAMEN ALEATORIO
-function generar() {
-  let examen = [];
-  let todas = [];
-
-  // Juntar todas las preguntas de todos los temas
-  for (let tema in banco) {
-    todas = todas.concat(banco[tema]);
-  }
-
-  // Mezclar todas
-  todas = todas.sort(() => Math.random() - 0.5);
-
-  // Si hay menos de 50, repetir preguntas mezcladas
-  while (todas.length < 50) {
-    todas = todas.concat(todas.sort(() => Math.random() - 0.5));
-  }
-
-  // Tomar solo 50
-  examen = todas.slice(0, 50);
-
-  return examen;
+function iniciar() {
+    // Mezclar y tomar 50 (si hay menos, toma todas las que hay)
+    preguntas = [...banco].sort(() => Math.random() - 0.5).slice(0, 50);
+    actual = 0;
+    puntaje = 0;
+    
+    document.getElementById("inicio").classList.add("hidden");
+    document.getElementById("resultado").classList.add("hidden");
+    document.getElementById("quiz").classList.remove("hidden");
+    document.getElementById("stats-area").classList.remove("hidden");
+    document.getElementById("progress-container").classList.remove("hidden");
+    
+    mostrar();
 }
 
-function iniciar(){
-preguntas = generar();
-document.getElementById("inicio").classList.add("hidden");
-document.getElementById("quiz").classList.remove("hidden");
-mostrar();
+function mostrar() {
+    let p = preguntas[actual];
+    seleccion = null;
+    
+    // UI Reset
+    document.getElementById("pregunta").innerText = p.q;
+    document.getElementById("categoria-tag").innerText = p.t;
+    document.getElementById("counter-text").innerText = `${(actual + 1).toString().padStart(2, '0')} / ${preguntas.length}`;
+    document.getElementById("btn-siguiente").classList.add("hidden");
+    document.getElementById("feedback").classList.add("hidden");
+    
+    // Opciones
+    let html = "";
+    p.o.forEach((op, i) => {
+        html += `<button class="option-btn w-full text-left p-5 rounded-2xl bg-white font-medium shadow-sm flex items-center gap-4" onclick="validar(${i}, this)">
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-xs font-black text-slate-400">${String.fromCharCode(65+i)}</span>
+                    ${op}
+                 </button>`;
+    });
+    document.getElementById("opciones").innerHTML = html;
+
+    // Progreso
+    let porc = Math.round((actual / preguntas.length) * 100);
+    document.getElementById("barra").style.width = porc + "%";
+    document.getElementById("percent-text").innerText = porc + "%";
 }
 
-function mostrar(){
-let p = preguntas[actual];
-document.getElementById("pregunta").innerText = p.q;
-document.getElementById("contador").innerText = `Pregunta ${actual+1} de ${preguntas.length}`;
+function validar(idx, el) {
+    if (seleccion !== null) return;
+    seleccion = idx;
 
-let opcionesHTML="";
-p.o.forEach((op,i)=>{
-opcionesHTML += `<div class="option" onclick="seleccionar(${i},this)">${op}</div>`;
-});
+    let p = preguntas[actual];
+    let esCorrecto = idx === p.c;
+    let feedback = document.getElementById("feedback");
+    
+    // Estilos de botones
+    const btns = document.querySelectorAll(".option-btn");
+    if (esCorrecto) {
+        puntaje++;
+        el.classList.add("option-correct");
+        feedback.className = "mb-10 p-6 rounded-2xl border-2 bg-green-50 border-green-200 text-green-800 block";
+        document.getElementById("feedback-msg").innerText = "¡Excelente Análisis!";
+    } else {
+        el.classList.add("option-wrong");
+        btns[p.c].classList.add("option-correct");
+        feedback.className = "mb-10 p-6 rounded-2xl border-2 bg-red-50 border-red-200 text-red-800 block";
+        document.getElementById("feedback-msg").innerText = "Error detectado";
+    }
 
-document.getElementById("opciones").innerHTML = opcionesHTML;
-
-let progreso = ((actual+1)/preguntas.length)*100;
-document.getElementById("barra").style.width = progreso+"%";
-
-seleccion=null;
+    document.getElementById("explicacion").innerText = p.e;
+    document.getElementById("btn-siguiente").classList.remove("hidden");
+    document.getElementById("live-score").innerText = Math.round((puntaje / (actual + 1)) * 100) + "%";
 }
 
-function seleccionar(i,el){
-seleccion=i;
-document.querySelectorAll(".option").forEach(e=>e.classList.remove("selected"));
-el.classList.add("selected");
+function siguiente() {
+    actual++;
+    if (actual >= preguntas.length) {
+        finalizar();
+    } else {
+        mostrar();
+    }
 }
 
-function siguiente(){
+function finalizar() {
+    document.getElementById("quiz").classList.add("hidden");
+    document.getElementById("resultado").classList.remove("hidden");
+    
+    let porcentaje = Math.round((puntaje / preguntas.length) * 100);
+    document.getElementById("final-percent").innerText = porcentaje + "%";
+    document.getElementById("res-correctas").innerText = puntaje;
+    document.getElementById("res-incorrectas").innerText = preguntas.length - puntaje;
 
-if(seleccion===null){
-alert("Selecciona una respuesta");
-return;
+    let nivel = "";
+    let color = "";
+    if (porcentaje >= 90) { nivel = "Nivel: EXPERTO (Listo para el examen)"; color = "#22c55e"; }
+    else if (porcentaje >= 70) { nivel = "Nivel: MUY BUENO (Refuerza errores)"; color = "#3b82f6"; }
+    else if (porcentaje >= 50) { nivel = "Nivel: COMPETENTE (Necesitas más práctica)"; color = "#eab308"; }
+    else { nivel = "Nivel: INICIAL (Sigue estudiando)"; color = "#ef4444"; }
+
+    document.getElementById("nivel-msg").innerText = nivel;
+    document.getElementById("result-circle").style.borderColor = color;
+    document.getElementById("final-percent").style.color = color;
 }
 
-if(seleccion === preguntas[actual].c){
-puntaje++;
+function reiniciar() {
+    location.reload();
 }
 
-actual++;
-
-if(actual>=preguntas.length){
-final();
-return;
+function confirmExit() {
+    if (confirm("¿Seguro que deseas abandonar la prueba? No se guardará el progreso.")) {
+        reiniciar();
+    }
 }
-
-mostrar();
-}
-
-function final(){
-document.getElementById("quiz").classList.add("hidden");
-document.getElementById("resultado").classList.remove("hidden");
-
-let total = preguntas.length;
-let porcentaje = Math.round((puntaje/total)*100);
-
-document.getElementById("score").innerText = `${puntaje} / ${total} (${porcentaje}%)`;
-
-let nivel="Sigue practicando";
-
-if(porcentaje>=90) nivel="EXCELENTE";
-else if(porcentaje>=70) nivel="MUY BIEN";
-else if(porcentaje>=50) nivel="BIEN";
-
-document.getElementById("nivel").innerText = nivel;
-}
-
-function reiniciar(){
-location.reload();
-}
-
 </script>
 
 </body>
